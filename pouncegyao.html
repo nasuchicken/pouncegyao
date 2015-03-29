@@ -1,0 +1,270 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta lang="ja">
+	<title>bordgame test</title>
+</head>
+<body>
+<H2 id="titleText">面白いモンスター襲来</H2>
+<div id="kyori"> 決戦到着まで:00</div>
+<div id="m_attack">相手の攻撃力: an known</div>
+<input type="button" id="openEnemyAttack" name="" value="open enemy attack"> cost 2
+<div id="m_speed">相手の侵攻速度: an known</div>
+<input type="button" id="openEnemySpeed" name="" value="open enemy attack"> cost 2
+<div id="m_type">相手のタイプ: an known</div>
+<input type="button" id="openEnemyType" name="" value="open enemy type"> cost 2
+<hr>
+<div id="msg"></div>
+<hr>
+<div id="energy">energy|robo Life: 0</div>
+<div id="roboat">robo AT: 0</div>
+<div id="baseat">base AT: 0</div>
+
+<input type="button" id="getRoboWapon" name="" value="get robo wapon"> cost 2 : ロボの基礎攻撃力です<br>
+<input type="button" id="getBaseWapon" name="" value="get base wapon"> cost 5 : 基地の砲台数です<br>
+<input type="button" id="getCounterWapon" name="" value="get counter wapon"> cost 3 : 接近戦でのカウンター能力です<br>
+
+<div style="display:none">
+<div id="most"><img src="akpiyo.png"></div>
+</div>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script>
+	$(function() {
+
+		var timer = null,
+			enemyturn, // 何秒ごと敵が行動するか
+			turnCounter,
+			counter,
+			enemyLife,
+			enemyAt,
+			enemySpeed,
+			enemyDash,
+			energy,
+			life,
+			roboat,
+			baseat,
+			counterFlag,
+			disMonsterAt,
+			disMonsterSpeed,
+			disMonsterType,
+			turn,
+			mode;  // mode=0 遠距離戦 mode=1　決戦
+
+			init();
+
+		function startIntervalFunc() {
+			if(!timer) {
+				timer = setInterval(mainFunc, 1000);
+				$('#msg').text('敵が襲来しました');
+			}
+		}
+
+		// 毎秒呼ばれるメインルーチン
+		function mainFunc() {
+			switch (mode) {
+				case 0:
+					energy++;
+					turnCounter--;
+					$('#msg').text("モンスターがゆっくり近づいてくる")
+					if(turnCounter <= 0) {
+						turnCounter = enemyturn;
+						enemyMoveModeOne();
+					}
+					drawBorad();
+					break;
+				case 1:
+					enemyMoveCounter();
+					break;
+				case 2:
+					enemyMoveModeTwo();
+					break;
+			}
+		}
+
+		function clearIntervalFunc() {
+			clearInterval(timer);
+
+			counter = 0;
+		}
+
+		function init() {
+			timer = null,
+			enemyturn = 5, // 難病ごと敵が行動するか
+			turnCounter = 0,
+			counter =  25,
+			enemyLife = 20,
+			enemyAt = Math.floor(Math.random()*13)+1,
+			enemySpeed = 13 - enemyAt,
+			enemyDash = Math.floor(Math.random()*9)+1,
+			energy = 0,
+			life = 0,
+			roboat = 0,
+			baseat = 0,
+			counterFlag = 0,
+			disMonsterType = 'an known',
+			disMonsterSpeed = 'an known',
+			disMonsterAt ='an known',
+			turn = 1,
+			mode = 0;
+		}
+
+		function gameOver(m) {
+			clearIntervalFunc();
+			alert(m);
+			init();
+		}
+
+		function enemyMoveModeOne() {
+			// 接近してくるとき
+			// まず基地からの攻撃
+			if(baseat>=1){
+				enemyLife -= baseat*2;
+				$('#msg').text(baseat*2 + 'を基地からの攻撃');
+			}
+
+			if(enemyLife <= 0) {
+				// 倒したときのリアクション
+				drawBorad();
+				gameOver('destory!');
+			}
+
+			counter -= Math.floor( (Math.random()*6) + enemySpeed/2 )
+			if (counter < 10) counter -= enemyDash;
+
+			if (counter < 0) {
+				counter = 0;
+				drawBorad();
+
+				$('#msg').text('決戦の開始だ');
+				if (counterFlag == 0) {
+					mode = 2;
+				} else {
+					mode = 1;
+				}
+
+			}
+		}
+
+		function enemyMoveCounter() {
+			//
+			var d;
+			d = enemyAt - 3;
+			if (d < 0) d = 0;
+			$('#msg').text('カウンターダメージ' + d + '!!');
+			enemyLife -= d;
+
+			if(enemyLife <= 0) {
+				// 倒したときのリアクション
+				drawBorad();
+				gameOver('destory!');
+			}
+
+			mode = 2;
+		}
+
+		function enemyMoveModeTwo(){
+			var damege;
+			damege = Math.floor(Math.random()*6) + 1;
+			// 決戦シーンの場合
+			if( (enemyAt + Math.floor(Math.random()*6 )) <= (roboat + Math.floor(Math.random()*6 ))){
+				enemyLife -= Math.floor(damege + roboat/3);
+				$('#msg').text(damege + 'のダメージをモンスターに与えた');
+				drawBorad();
+				if (enemyLife < 0) gameOver('destory');
+			} else {
+				$('#msg').text(damege + 'のダメージを食らった');
+				energy -= damege;
+				drawBorad();
+				if (energy < 0 ) gameOver('game over');
+			}
+			/*
+			switch (turn) {
+				case 1:
+					$('#msg').text(roboat + 'のダメージをモンスターに与えた');
+					enemyLife -= roboat;
+					drawBorad();
+					if (enemyLife < 0) {
+						drawBorad()
+						gameOver('destory');
+					}
+					break;
+				case 2:
+					$('#msg').text(enemyAt + 'のダメージを食らった');
+					energy -= enemyAt;
+					drawBorad();
+					if (energy < 0) {
+						drawBorad()
+						gameOver('game over');
+					}
+			}
+			turn = 3 - turn;
+			*/
+		}
+
+		function drawBorad() {
+			$("#kyori").text("決戦到着まで : " + (counter*5) + "秒" );
+			$("#m_attack").text("相手の攻撃力 : " + disMonsterAt);
+			$("#m_speed").text("相手の侵攻速度 : " + disMonsterSpeed);
+			$("#m_type").text("相手のタイプ : " + disMonsterType);
+
+			$("#energy").text("energy|robo Life : " + energy);
+			$("#roboat").text("robo At : " + roboat);
+			$("#baseat").text("base At : " + baseat);
+		}
+
+
+		// 各コマンドの対応
+		$("#getRoboWapon").click(function() {
+			if(energy >= 2) {
+				roboat+=3;
+				energy-=2;
+			}
+		});
+
+		$("#getBaseWapon").click(function() {
+			if(energy >= 5) {
+				baseat+=1;
+				energy-=5;
+			}
+		});
+
+		$("#titleText").click(function() {
+			$("#kyori").text("距離 : " + counter);
+			startIntervalFunc();
+		});
+
+		$("#openEnemyAttack").click(function() {
+			if(energy >= 1) {
+				disMonsterAt = enemyAt;
+				energy-=3;
+			}
+		});
+
+		$("#openEnemySpeed").click(function() {
+			if(energy >= 1) {
+				disMonsterSpeed = enemySpeed;
+				energy-=3;
+			}
+		});
+
+		$("#openEnemyType").click(function() {
+			if(energy >= 1) {
+				disMonsterType = 'nomal'
+				energy-=3;
+			}
+		});
+
+		$("#getCounterWapon").click(function() {
+			if((energy >= 3) && (counterFlag == 0)) {
+				counterFlag = 1;
+				$('#getCounterWapon').text('Counter wapon OK');
+				energy-=3;
+			}
+		});
+
+	});
+
+</script>
+
+</body>
+</html>
