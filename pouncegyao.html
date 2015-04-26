@@ -15,6 +15,7 @@
 <input type="button" id="openEnemyType" name="" value="open enemy type"> cost 2
 <hr>
 <div id="msg"></div>
+<input type="button" id="startBtn" name="" value="START BUTTON"><br>
 <hr>
 <div id="energy">energy|robo Life: 0</div>
 <div id="roboat">robo AT: 0</div>
@@ -111,6 +112,7 @@
 		function gameOver(m) {
 			clearIntervalFunc();
 			alert(m);
+			$("#startBtn").show();
 			init();
 		}
 
@@ -201,6 +203,7 @@
 			*/
 		}
 
+		// 状況表示部分
 		function drawBorad() {
 			$("#kyori").text("決戦到着まで : " + (counter*5) + "秒" );
 			$("#m_attack").text("相手の攻撃力 : " + disMonsterAt);
@@ -228,9 +231,11 @@
 			}
 		});
 
-		$("#titleText").click(function() {
+		// start btn 処理
+		$("#startBtn").click(function() {
 			$("#kyori").text("距離 : " + counter);
 			startIntervalFunc();
+			$("#startBtn").hide();
 		});
 
 		$("#openEnemyAttack").click(function() {
