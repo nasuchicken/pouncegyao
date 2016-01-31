@@ -24,6 +24,15 @@
 <input type="button" id="getBaseWapon" name="" value="get base wapon"> cost 5 : 基地の砲台数です<br>
 <input type="button" id="getCounterWapon" name="" value="get counter wapon"> cost 3 : 接近戦でのカウンター能力です<br>
 
+<hr>
+<div>
+    ルール説明<br>
+    敵が一定の速度で進撃してきます。あなたは、司令官となって進撃した敵を撃破してください。
+    接近したらロボットで迎撃することになりますが、それまでは基地よりの遠隔攻撃にて一方的にダメージが与えられます。
+    初期値は、ロボットの攻撃力、基地の攻撃力の両方とも０です。
+    ロボットの耐久消費財を、ロボット・基地のそれぞれの攻撃力へ転嫁できます。
+    
+</div>
 <div style="display:none">
 <div id="most"><img src="akpiyo.png"></div>
 </div>
@@ -89,9 +98,9 @@
 
 		function init() {
 			timer = null,
-			enemyturn = 5, // 難病ごと敵が行動するか
+			enemyturn = 5, // 何秒ごと敵が行動するか
 			turnCounter = 0,
-			counter =  25,
+			counter =  30, // 敵との距離を示す
 			enemyLife = 20,
 			enemyAt = Math.floor(Math.random()*13)+1,
 			enemySpeed = 13 - enemyAt,
