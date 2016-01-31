@@ -5,7 +5,7 @@
 	<title>bordgame test</title>
 </head>
 <body>
-<H2 id="titleText">面白いモンスター襲来</H2>
+<H2 id="titleText">ノコノコとモンスター襲来</H2>
 <div id="kyori"> 決戦到着まで:00</div>
 <div id="m_attack">相手の攻撃力: an known</div>
 <input type="button" id="openEnemyAttack" name="" value="open enemy attack"> cost 2
@@ -121,6 +121,7 @@
 		function gameOver(m) {
 			clearIntervalFunc();
 			alert(m);
+          　$('#msg').text(' '); // メッセージクリア
 			$("#startBtn").show();
 			init();
 		}
