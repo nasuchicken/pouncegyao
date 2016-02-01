@@ -2,6 +2,34 @@
 <html>
 <head>
 	<meta lang="ja">
+    <style>
+        .btn {
+        background: #3498db;
+        background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+        background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+        background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+        background-image: -o-linear-gradient(top, #3498db, #2980b9);
+        background-image: linear-gradient(to bottom, #3498db, #2980b9);
+        -webkit-border-radius: 28;
+        -moz-border-radius: 28;
+        border-radius: 28px;
+        font-family: Arial;
+        color: #ffffff;
+        font-size: 12px;
+        padding: 10px 20px 10px 20px;
+        text-decoration: none;
+        }
+
+        .btn:hover {
+        background: #3cb0fd;
+        background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+        background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+        background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+        background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+        background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+        text-decoration: none;
+        }
+    </style>
 	<title>bordgame test</title>
 </head>
 <body>
@@ -21,17 +49,17 @@
 <div id="roboat">robo AT: 0</div>
 <div id="baseat">base AT: 0</div>
 
-<input type="button" id="getRoboWapon" name="" value="get robo wapon"> cost 2 : ロボの基礎攻撃力です<br>
-<input type="button" id="getBaseWapon" name="" value="get base wapon"> cost 5 : 基地の砲台数です<br>
-<input type="button" id="getCounterWapon" name="" value="get counter wapon"> cost 3 : 接近戦でのカウンター能力です<br>
+<input type="button" class="btn" id="getRoboWapon" name="" value="get robo wapon"> cost 2 : ロボの基礎攻撃力です<br>
+<input type="button" class="btn" id="getBaseWapon" name="" value="get base wapon"> cost 5 : 基地の砲台数です<br>
+<input type="button" class="btn" id="getCounterWapon" name="" value="get counter wapon"> cost 3 : 接近戦でのカウンター能力です<br>
 
 <hr>
 <div>
     ルール説明<br>
-    敵が一定の速度で進撃してきます。あなたは、司令官となって進撃した敵を撃破してください。
-    接近したらロボットで迎撃することになりますが、それまでは基地よりの遠隔攻撃にて一方的にダメージが与えられます。
-    初期値は、ロボットの攻撃力、基地の攻撃力の両方とも０です。
-    ロボットの耐久消費財を、ロボット・基地のそれぞれの攻撃力へ転嫁できます。
+    敵が一定の速度で進撃してきます。あなたは、司令官となって進撃した敵を撃破してください。<br>
+    接近したらロボットで迎撃することになりますが、それまでは基地よりの遠隔攻撃にて一方的にダメージが与えられます。<br>
+    初期値は、ロボットの攻撃力、基地の攻撃力の両方とも０です。<br>
+    ロボットの耐久消費財を、ロボット・基地のそれぞれの攻撃力へ転嫁できます。<br>
     
 </div>
 <div style="display:none">
