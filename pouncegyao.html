@@ -86,16 +86,19 @@
 			disMonsterSpeed,
 			disMonsterType,
 			turn,
-			mode;  // mode=0 遠距離戦 mode=1　決戦
+			mode, // mode=0 遠距離戦 mode=1　決戦
+			scene; // タイトル=0 　ゲーム中=1　終了時点=2
 
 			init();
 
+/* とりあえずターンベースにするためコメントアウト
 		function startIntervalFunc() {
 			if(!timer) {
 				timer = setInterval(mainFunc, 1000);
 				$('#msg').text('敵が襲来しました');
 			}
 		}
+*/
 
 		// 毎秒呼ばれるメインルーチン
 		function mainFunc() {
@@ -119,11 +122,6 @@
 			}
 		}
 
-		function clearIntervalFunc() {
-			clearInterval(timer);
-
-			counter = 0;
-		}
 
 		function init() {
 			timer = null,
@@ -144,13 +142,12 @@
 			disMonsterAt ='an known',
 			turn = 1,
 			mode = 0;
+			scene = 0;
 		}
 
 		function gameOver(m) {
-			clearIntervalFunc();
 			alert(m);
           　$('#msg').text(' '); // メッセージクリア
-			$("#startBtn").show();
 			init();
 		}
 
@@ -270,10 +267,20 @@
 		});
 
 		// start btn 処理
+		// start btn -> turn end　に変換
 		$("#startBtn").click(function() {
-			$("#kyori").text("距離 : " + counter);
-			startIntervalFunc();
-			$("#startBtn").hide();
+			switch (scene) {
+				case 0:
+					$("#kyori").text("距離 : " + counter);
+					scene = 1; // タイトルシーンから、ゲームシーンへシーンの変更
+					$("#startBtn").text("turn end");
+					break;
+				case 1:
+					mainFunc();
+					break;
+				
+			}
+
 		});
 
 		$("#openEnemyAttack").click(function() {
